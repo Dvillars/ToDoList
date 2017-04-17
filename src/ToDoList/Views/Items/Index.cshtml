@@ -1,0 +1,21 @@
+﻿@{
+}
+@model IEnumerable<ToDoList.Models.Item>
+
+<html>
+<head>
+    <title>To Do List</title>
+</head>
+<body>
+    <h2>To Do List</h2>
+    <hr />
+    <h4>@Html.DisplayNameFor(model => model.Description)</h4>
+    <ul>
+        @foreach(var listItem in Model)
+        {
+            <li>@Html.DisplayFor(modelItem => listItem.Description) | @Html.ActionLink("Details", "Details", new { id = listItem.ItemId }) | @Html.ActionLink("Edit", "Edit", new { id = listItem.ItemId }) | @Html.ActionLink("Delete", "Delete", new { id = listItem.ItemId })</li>
+        }
+    </ul>
+    <p>@Html.ActionLink("Add new item", "Create")</p>
+</body>
+</html>
