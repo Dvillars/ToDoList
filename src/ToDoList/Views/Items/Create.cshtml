@@ -2,19 +2,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model ToDoList.Models.Item
+<h2>Create a new item</h2>
+<hr />
 
-<html>
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(model => model.Description)
+    @Html.EditorFor(model => model.Description)
 
-<body>
-    <h2>Create</h2>
-    <hr />
-    <h4>Add a new task</h4>
-    @using (Html.BeginForm())
-    {
-        @Html.LabelFor(model => model.Description)
-        @Html.TextBoxFor(model => model.Description)
-        <input type="submit" value="Add new task" />
-    }
-    <p>@Html.ActionLink("Back to list", "Index")</p>
-</body>
-</html>
+    @Html.LabelFor(model => model.CategoryId)
+    @Html.DropDownList("CategoryId")
+
+    <input type="submit" value="Create" class="btn btn-default" />
+}
+
+@Html.ActionLink("Back to List", "Index")

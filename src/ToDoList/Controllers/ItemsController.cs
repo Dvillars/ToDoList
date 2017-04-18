@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Models;
 using Microsoft.EntityFrameworkCore;
-
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ToDoList.Controllers
 {
@@ -15,15 +14,17 @@ namespace ToDoList.Controllers
         private ToDoListContext db = new ToDoListContext();
         public IActionResult Index()
         {
-            return View(db.Items.ToList());
+            return View(db.Items.Include(items => items.Category).ToList());
         }
         public IActionResult Details(int id)
         {
             var thisItem = db.Items.FirstOrDefault(items => items.ItemId == id);
+            ViewBag.Category = db.Categories.FirstOrDefault(categories => categories.CategoryId == thisItem.CategoryId);
             return View(thisItem);
         }
         public IActionResult Create()
         {
+            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name");
             return View();
         }
 
@@ -37,6 +38,7 @@ namespace ToDoList.Controllers
         public IActionResult Edit(int id)
         {
             var thisItem = db.Items.FirstOrDefault(items => items.ItemId == id);
+            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name");
             return View(thisItem);
         }
 
