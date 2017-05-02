@@ -36,6 +36,9 @@ namespace ToDoList
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            var context = app.ApplicationServices.GetService<ToDoListContext>();
+            AddTestData(context);
+
             loggerFactory.AddConsole();
 
             if (env.IsDevelopment())
@@ -50,10 +53,35 @@ namespace ToDoList
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.Run(async (context) =>
+            app.Run(async (context1) =>
             {
-                await context.Response.WriteAsync("Hello World!");
+                await context1.Response.WriteAsync("Hello World!");
             });
+        }
+
+        private static void AddTestData(ToDoListContext context)
+        {
+            context.Database.ExecuteSqlCommand("TRUNCATE TABLE Categories");
+
+            var seedMarketingContent = new Models.Category
+            {
+                Name = "household"
+            };
+            context.Categories.Add(seedMarketingContent);
+
+            var seedMarketingContent2 = new Models.Category
+            {
+                Name = "outdoors"
+            };
+            context.Categories.Add(seedMarketingContent2);
+
+            var seedMarketingContent3 = new Models.Category
+            {
+                Name = "school"
+            };
+            context.Categories.Add(seedMarketingContent3);
+
+            context.SaveChanges();
         }
     }
 }
